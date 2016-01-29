@@ -2,8 +2,10 @@ from django.conf.urls import url
 from blog.views import IndexView,ArticleView,AllView,SearchView,ColumnView,UserView,NewsView,TagView,CategoryView
 from django.views.generic import TemplateView,DetailView
 from blog.models import News
+from test2.views import TestView,Test2View,TestView2
 
 urlpatterns = [
+        url(r'^test2/$',TestView2.as_view()),
         url(r'^$',IndexView.as_view()),
         url(r'^article/(?P<slug>\w+).html$',ArticleView.as_view()),
         url(r'^all/$',AllView.as_view()),

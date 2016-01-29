@@ -158,7 +158,6 @@ class AllView(BaseMixin,ListView):
 
 class SearchView(BaseMixin,ListView):
     template_name = 'blog/search.html'
-    context_object_name = 'article_list'
     paginate_by = PAGE_NUM
 
     def get_context_data(self,**kwargs):

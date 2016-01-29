@@ -241,11 +241,11 @@ class UserControl(View):
 	        #上传头像到七牛
             from vmaig_blog.settings import qiniu_access_key,qiniu_secret_key,qiniu_bucket_name
             import qiniu
-            
+
             assert qiniu_access_key and qiniu_secret_key and qiniu_bucket_name
             q = qiniu.Auth(qiniu_access_key, qiniu_secret_key)
 
-            print qiniu_access_key
+            # print qiniu_access_key
 
             key = filename
             localfile = path
