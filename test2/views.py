@@ -21,6 +21,7 @@ import json
 import logging
 from django.views.generic import TemplateView
 from test2.models import  BlogsPost
+from django.views.decorators.csrf import csrf_exempt
 
 
 #缓存
@@ -39,7 +40,7 @@ class Test2View(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse('Hello, World!')
 
-class TestView2(ListView):
+class TestViewGet(ListView):
     context_object_name = 'articleList'
     template_name = 'test2/test2.html'
     paginate_by = 50
@@ -56,6 +57,48 @@ class TestView2(ListView):
         #     serverlist = serverlist.filter(Q(dx_ip=keyword)|Q(lt_ip=keyword)|Q(domain=keyword))
         return articleList
 
+    def get_context_data(self, **kwargs):
+        context = super(TestView2,self).get_context_data(**kwargs)
+        # platlist = ServerList.objects.values('plat').annotate()
+        # context['platlist'] = platlist
+        return context
+
+
+class TestView2(ListView):
+    context_object_name = 'articleList'
+    template_name = 'test2/test2.html'
+    paginate_by = 50
+    #model = ServerList
+    http_method_names = [u'post','get']
+
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        title = self.request.POST.get('title','')
+        mydict = {"result":"dewe"}
+        return HttpResponse(json.dumps(mydict),content_type="application/json")
+
+    @csrf_exempt
+    def get_queryset(self):
+                #获取搜索的关键字
+        title = self.request.GET.get('title','')
+        logger.debug(u'article title is [%s]' % title)
+        if (title.strip() == ''):
+           articleList = BlogsPost.objects.all()
+           return articleList
+        else:
+           articleList = BlogsPost.objects.filter(title=title)
+           logger.debug(u'ariticle list is => [%s]' % articleList)
+           mydict = {"result":"dewe"}
+           return HttpResponse(json.dumps(mydict),content_type="application/json")
+
+        # plat = self.request.GET.get('plat')
+        # keyword = self.request.GET.get('keyword')
+        # if plat:
+        #     serverlist = serverlist.filter(plat=plat)
+        # if keyword:
+        #     serverlist = serverlist.filter(Q(dx_ip=keyword)|Q(lt_ip=keyword)|Q(domain=keyword))
+        # return articleList
+    @csrf_exempt
     def get_context_data(self, **kwargs):
         context = super(TestView2,self).get_context_data(**kwargs)
         # platlist = ServerList.objects.values('plat').annotate()
