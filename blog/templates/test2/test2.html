@@ -11,7 +11,7 @@
                 <th>时间</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="table_body">
             {% for article in articleList %}
                 <tr>
                     <td id="id" style="display: none"></td>
@@ -51,8 +51,13 @@
                 data: { title: title.toString()},
                 url: "../test2/", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
                 success: function (data, textStatus) {
-                    //var data = eval('(' + data + ')');
-                    alert(data);
+                    var data = eval('(' + data + ')');
+                    //alert(data);
+                    //alert(data.title);
+                    $("#table_body").children("tr").remove();
+                    var html = "";
+                     html += "<tr><td id=\"id\" style=\"display: none\"></td><td id=\"titleFlag\">"+data.title+"</td><td>"+data.author+"</td><td>"+data.content+"</td><td>"+data.timestamp+"</td><th><a href=\"#\" class=\"btn btn-primary xxxx\" role=\"button\">编辑</a></th></tr>";
+                    $("#table_body").append(html);
                 },
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
