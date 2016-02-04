@@ -51,14 +51,15 @@
                 data: { title: title.toString()},
                 url: "../test2/", //后台处理函数的url 这里用的是static url 需要与urls.py中的name一致
                 success: function (data, textStatus) {
+                    //var data = eval('(' + data + ')');
                     alert(data);
                 },
-                            beforeSend:function(xhr){
-                xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
-            },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
+                },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-{#                    alert(XMLHttpRequest.responseText);#}
-                    alert("false");
+                    {#                    alert(XMLHttpRequest.responseText);#}
+                    alert("编辑出错");
 
                 }
             });

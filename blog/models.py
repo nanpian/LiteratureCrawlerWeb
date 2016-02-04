@@ -64,11 +64,11 @@ class Category(models.Model):
 
     
     def __unicode__(self):
-        if self.parent:
-            return '%s-->%s' % (self.parent,self.name)
-        else:
-            return '%s' % (self.name)
+        return '%s' % (self.catname)
 
+    def toJSON(self):
+        import json
+        return json.dumps(dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]]))
 
 class Article(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,verbose_name=u'作者')

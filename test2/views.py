@@ -74,8 +74,14 @@ class TestView2(ListView):
     @csrf_exempt
     def post(self, request, *args, **kwargs):
         title = self.request.POST.get('title','')
-        mydict = {"result":"dewe"}
-        return HttpResponse(json.dumps(mydict),content_type="application/json")
+        articleList = BlogsPost.objects.filter(title=title)
+        import json
+        for article in articleList:
+            articleJson = article.toJSON()
+            logger.info(u'article json is [%s]' % articleJson)
+            return HttpResponse(articleJson)
+       # jsonReturn =  json.dumps(dict([(attr, getattr(articleList.model, attr)) for attr in [f.name for f in articleList.model._meta.fields]]))
+        return HttpResponse(articleList,content_type="application/json")
 
     @csrf_exempt
     def get_queryset(self):
